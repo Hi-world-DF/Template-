@@ -1,0 +1,36 @@
+# 定时器线程池，一个定时器+1
+# {AuditSubmit, PreProcess, MessageSend, MessageReceive, Notification}
+executor:
+  scheduler:
+    poolSize: 2
+    threadNamePrefix: scheduler-pool-
+    # {CALL_RUNS, ABORT, DISCARD, DISCARD_OLDEST}
+    rejectedPolicy: DISCARD
+    removeOnCancelPolicy: false
+  controller:
+    biz:
+      poolType: NORMAL
+      corePoolSize: 16
+      allowCoreThreadTimeout: true
+      # {AuditSubmit, PreProcess, MessageSend, MessageReceive, Notification}
+      maxPoolSize: 64
+      queueCapacity: 100000
+      threadNamePrefix: biz-pool-
+      # {CALL_RUNS, ABORT, DISCARD, DISCARD_OLDEST}
+      rejectedPolicy: ABORT
+      parallelism: 2
+      asyncMode: true
+  # 默认阻塞服务线程池
+  # {NORMAL: ThreadPoolTaskExecutor, FORKJOIN: ForkJoinPool}
+  default-blocking:
+    poolType: NORMAL
+    corePoolSize: 1
+    allowCoreThreadTimeout: true
+    # {AuditSubmit, PreProcess, MessageSend, MessageReceive, Notification}
+    maxPoolSize: 4
+    queueCapacity: 100
+    threadNamePrefix: default-blocking-pool-
+    # {CALL_RUNS, ABORT, DISCARD, DISCARD_OLDEST}
+    rejectedPolicy: ABORT
+    parallelism: 2
+    asyncMode: true

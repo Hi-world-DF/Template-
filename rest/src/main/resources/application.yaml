@@ -1,0 +1,55 @@
+log4j2:
+  formatMsgNoLookups: true
+server:
+  port: 8080
+  servlet:
+    context-path: /template-rest
+# swagger
+swagger2:
+  enable: true
+# swagger自定义插件开关(生产环境需要关闭)
+switch:
+  custom-swagger-plugin:
+    enabled: true
+  ip-check:
+    enabled: true
+  service:
+    # 跨域服务
+    cors:
+      enabled: true
+# 数据库mysql 8.0新特性
+useMysqlSkipLocked: true
+# json自定义序列化，将所有long转为string
+json:
+  custom.v1:
+    serialize:
+      enable: true
+# 异步请求超时时间
+async:
+  request:
+    timeout: 10s
+#日志级别
+logging:
+  level:
+    root: INFO
+    web: DEBUG
+    sql: DEBUG
+spring:
+  profiles:
+    active: dev
+  application:
+    name: template-rest
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://${encrypt.mysql.host}/${encrypt.mysql.dbname}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Hong_Kong&characterEncoding=UTF-8
+    username: ${encrypt.mysql.username}
+    password: ${encrypt.mysql.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
+# mybatis命名规则
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

@@ -1,0 +1,50 @@
+# RSA私钥信息
+# 必要时在启动参数里覆盖 -Dspring.profiles.active=dev -Djasypt-rsa.privateKeyPath=
+jasypt-rsa:
+  privateKeyPath: file:/Users/liujingcheng/.ssh/fsi-config-pk.pem
+spring:
+  profiles:
+    # [dev, staging, production]
+    active: dev
+
+---
+# 开发环境dev
+spring:
+  config:
+    activate:
+      on-profile: dev
+jasypt:
+  encryptor:
+    bean: rsaRawJasyptStringEncryptor
+    # dev环境下直接使用明文私钥和公钥
+    # 直接私钥字符串形式
+    private-key-string: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALcbLCjn5CVFzjIyvxdLMlYYfu6/1wzC58MRfEh3vZarcxyCfBvin4B1eV3ifyYohdA7Is9pzGwix1VnTuXO3iQOH3dMACYygT+Zwe0aaLFwZhLDHk2GeWhOs+slmTlviFSC9Dk6XE+xFcUjBSYPPHQSgkMDqsHppbXG61IeMw8DAgMBAAECgYAQ4M9UQfPUv7d/BxB4PDU6nG1u4n4XLgwg/gafw3HVZp5ovVplU6FyPOHgFpWz1b5n8FuIFO+D9Dy9kZVDN6tgLWEflvFrhhZt+tvXbpRG//uwvuevPuTrBs5dSgzKyVDm+qvOkap0BGPGD9tndGX1mFaHNg52ZNRapmIiCkGuyQJBAOv2+qQU2Tle+p3ayMjAHRbO03dA9QnsVIqNC1pMArblPL+ad9FK2jEVPiGx4xMYB1PqX9PTWa5jINQI5MG0Uf8CQQDGpzz12abrEQ+/A7vtJwIYeGiBB5bXUNzbcVOis28ptlyk2SGAasLNbxHu1D6LMJZYoPmqEh9qTzCcZuwjFfr9AkAC/BvNiYn55M6swoC5sVxs1m7sWkD/QCMNoZ0cJkv+fkXXcp/DYPwDlO41ROfHbQ1irVtK9ahzwUNAC2DBZoOHAkEApVKW5A+v319CmHg2FKZrEwxaBE/Zk/Wi6CmHLhdggvlWXoapX+L5ndg6t2UBa/sSlE3bmVMdu+6NiQwKpyRqzQJATgXq1/53QIHKTX+5AxDdeIJQUWw4Ga8HOQYS9IdPZrZEj9jQtpTEy38oWFAaKZEzefcAQETHtSE/errXvmP5gg==
+    # 正式使用时不用配置
+    public-key-string: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3Gywo5+QlRc4yMr8XSzJWGH7uv9cMwufDEXxId72Wq3Mcgnwb4p+AdXld4n8mKIXQOyLPacxsIsdVZ07lzt4kDh93TAAmMoE/mcHtGmixcGYSwx5NhnloTrPrJZk5b4hUgvQ5OlxPsRXFIwUmDzx0EoJDA6rB6aW1xutSHjMPAwIDAQAB
+# 业务类密码相关配置
+encrypt:
+  mysql:
+    host: 127.0.0.1
+    dbname: template_backend
+    username: rdadm
+    password: Xgd@2016
+
+---
+# 提测环境
+spring:
+  config:
+    activate:
+      on-profile: staging
+jasypt:
+  encryptor:
+    bean: rsaRawJasyptStringEncryptor
+    # 外部私钥形式
+    private-key-format: PEM
+    private-key-location: ${jasypt-rsa.privateKeyPath}
+# 业务类密码相关配置
+encrypt:
+  mysql:
+    host: 172.16.219.132
+    dbname: staging_ec_backend
+    username: staging_ec_devops
+    password: ruuGgaL@gt@rdgb6@Ferg@RD5@6Fht
